@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         radioGroup = findViewById(R.id.radioGroup)
 
-        createChannel(getString(R.string.channel_id), getString(R.string.channel_name))
+
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -73,6 +73,24 @@ class MainActivity : AppCompatActivity() {
             custom_button.buttonState = ButtonState.Clicked
             download()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStart() {
+        createChannel(getString(R.string.channel_id), getString(R.string.channel_name))
+        super.onStart()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStop() {
+        deleteChannel()
+        super.onStop()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun deleteChannel() {
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.deleteNotificationChannel(getString(R.string.channel_id))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -16,6 +16,8 @@ class LoadingButton @JvmOverloads constructor(
     private var widthSize = 0
     private var heightSize = 0
     private var progressBar = 0f
+    private var backgroundBtnColor: Int = 0
+    private var progressColor: Int = 0
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -58,14 +60,21 @@ class LoadingButton @JvmOverloads constructor(
                 invalidate()
             }
         })
+        setupAttributes(attrs)
+    }
+
+    private fun setupAttributes(attrs: AttributeSet?) {
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.LoadingButton, 0, 0)
+        backgroundBtnColor = typedArray.getColor(R.styleable.LoadingButton_background_color, Color.BLACK)
+        progressColor = typedArray.getColor(R.styleable.LoadingButton_progress_color, Color.GREEN)
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawColor(resources.getColor(R.color.colorPrimary, null))
+        canvas?.drawColor(backgroundBtnColor)
         if (progressBar != 0f) {
-            paint.color = resources.getColor(R.color.colorPrimaryDark, null)
+            paint.color = progressColor
             canvas?.drawRect(Rect(0, 0, (progressBar * width).toInt(), height), paint)
             paint.color = resources.getColor(R.color.white, null)
             canvas?.drawLabel("We are loading", progressBar)

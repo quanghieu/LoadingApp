@@ -2,5 +2,7 @@
 <resources>
     <declare-styleable name="LoadingButton">
 <!--   TODO: create custom attributes for the view-->
+        <attr name="background_color" format="color"/>
+        <attr name="progress_color" format="color"/>
     </declare-styleable>
 </resources>
